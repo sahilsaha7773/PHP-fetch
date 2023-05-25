@@ -1,0 +1,16 @@
+{
+    "name": "sahils/utopia-fetch",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Sahils\\UtopiaFetch\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Sahil Saha",
+            "email": "sahilsaha7773@gmail.com"
+        }
+    ],
+    "require": {}
+}
