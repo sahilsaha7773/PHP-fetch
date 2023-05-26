@@ -1,11 +1,21 @@
 <?php
 require_once 'vendor/autoload.php';
-
+try {
 $resp = \Sahils\UtopiaFetch\Client::fetch(
-  'http://localhost:8000/get',
-    $query=[
+    requestUri: 'http://localhost:8001/post',
+    method: 'POST',
+    body:[
         'name' => 'John Doe',
         'age' => 30
     ]
 );
-echo $resp->getBody();
+} catch(\Sahils\UtopiaFetch\FetchException $e) {
+    print($e);
+}
+if($resp->isOk()) {
+    print("Response is OK\n");
+    print($resp->getBody());
+} else {
+    print("Response is not OK\n");
+    print($resp->getBody());
+}

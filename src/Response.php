@@ -22,6 +22,9 @@ class Response {
         $this->ok = $this->statusCode >= 200 && $this->statusCode < 300;
     }
     // Getters
+    public function isOk() {
+        return $this->ok;
+    }
     public function getBody() {
         return $this->body;
     }
@@ -67,11 +70,14 @@ class Response {
         return json_decode($this->body, true);
     }
     /*
-    * This method is used to convert the response body to binary
+    * This method is used to convert the response body to blob
     * @return string
     */
-    public function binary() {
-        return $this->body;
+    public function blob() : string {
+        $bin = "";
+        for($i = 0, $j = strlen($this->body); $i < $j; $i++) 
+        $bin .= decbin(ord($this->body)) . " ";
+        return $bin;
     }
 }
 
