@@ -2,7 +2,7 @@
 require_once 'vendor/autoload.php';
 try {
 $resp = \Sahils\UtopiaFetch\Client::fetch(
-    requestUri: 'http://localhost:8001/post',
+    requestUri: 'http://localhost:8000/post',
     method: 'POST',
     body:[
         'name' => 'John Doe',

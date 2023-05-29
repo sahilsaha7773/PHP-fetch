@@ -152,14 +152,12 @@ class Client {
             print_r($error_msg);
         }
         $resp = new Response(
-            [
-              'body' => $resp_body,
-              'headers' => curl_getinfo($ch),
-              'statusCode' => $resp_status,
-              'url' => $requestUri,
-              'method' => $method,
-              'type' => $resp_type
-            ]
+            method: $method,
+            url: $requestUri,
+            statusCode: $resp_status,
+            headers: $resp_headers,
+            body: $resp_body,
+            type: $resp_type
         );
         return $resp;
     }
