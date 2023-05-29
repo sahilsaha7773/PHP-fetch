@@ -12,14 +12,33 @@ class Response {
     private string $url;
     private bool $ok;
 
-    public function __construct($options) {
-        $this->body = $options['body'] ?? '';
-        $this->headers = $options['headers'] ?? [];
-        $this->statusCode = $options['statusCode'] ?? 0;
-        $this->method = $options['method'] ?? '';
-        $this->url = $options['url'] ?? '';
-        $this->type = $options['type'] ?? '';
-        $this->ok = $this->statusCode >= 200 && $this->statusCode < 300;
+    /**
+     * Response constructor
+     * @param string $method
+     * @param string $url
+     * @param int $statusCode
+     * @param string $type
+     * @param bool $ok
+     * @param string $body
+     * @param array $headers
+     * @return void
+     */
+    public function __construct(
+      string $method,
+      string $url,
+      int $statusCode=200,
+      string $type='',
+      bool $ok=true,
+      string $body='',
+      array $headers=[],
+    ) {
+        $this->body = $body;
+        $this->headers = $headers;
+        $this->statusCode = $statusCode;
+        $this->method = $method;
+        $this->url = $url;
+        $this->type = $type;
+        $this->ok = $ok;
     }
     // Getters
     public function isOk() {

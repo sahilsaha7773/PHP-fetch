@@ -1,6 +1,9 @@
 {
     "name": "sahils/utopia-fetch",
     "type": "library",
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    },
     "autoload": {
         "psr-4": {
             "Sahils\\UtopiaFetch\\": "src/"
