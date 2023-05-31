@@ -1,10 +1,12 @@
 <?php
+
 namespace Sahils\UtopiaFetch;
 
 require_once 'Response.php';
 require_once 'FetchException.php';
 
-class Client {
+class Client
+{
     public const METHOD_GET = 'GET';
     public const METHOD_POST = 'POST';
     public const METHOD_PUT = 'PUT';
@@ -35,26 +37,25 @@ class Client {
         }
 
         return $output;
-  }
+    }
   /**
-   * Private static method to process the data before making the request
-   * @param array $headers
-   * @param array $body
-   * @param array $query
-   * @param string $method
-   * @param string $requestUri
-   */
+     * Private static method to process the data before making the request
+     * @param array $headers
+     * @param array $body
+     * @param array $query
+     * @param string $method
+     * @param string $requestUri
+     */
     private static function processData(
-        &$headers, 
-        &$body, 
-        &$query, 
+        &$headers,
+        &$body,
+        &$query,
         &$method,
         &$requestUri
-    ){
+    ) {
         if(!$method) { // if method is not set, set it to GET by default
             $method = self::METHOD_GET;
-        }
-        else { // else convert the method to uppercase
+        } else { // else convert the method to uppercase
             $method = strtoupper($method);
         }
         // if there are no headers but a body set header to json by default
@@ -94,12 +95,12 @@ class Client {
    * @return Response
    */
     public function fetchHelper(
-        $requestUri, 
+        $requestUri,
         $headers,
         $method,
         $body,
         $query
-    ):Response {
+    ): Response {
         // Process the data before making the request
         $this->processData(
             $headers,
@@ -118,7 +119,7 @@ class Client {
         // Set the request method
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
         // Set the request body
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $body); 
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
         // Save the response headers
         curl_setopt($ch, CURLOPT_HEADERFUNCTION, function ($curl, $header) use (&$resp_headers) {
             $len = strlen($header);
@@ -145,7 +146,7 @@ class Client {
             print_r(curl_errno($ch));
         }
         curl_close($ch);
-        
+
         if (isset($error_msg)) {
             // TODO - Handle cURL error accordingly
             throw new \FetchException($error_msg);
@@ -167,10 +168,10 @@ class Client {
         $method = 'GET',
         $body = [],
         $query = []
-    ):Response {
+    ): Response {
         $client = new Client();
         return $client->fetchHelper(
-            $requestUri, 
+            $requestUri,
             $headers,
             $method,
             $body,
