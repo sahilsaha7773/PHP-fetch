@@ -44,14 +44,14 @@ class Client
      * @param array $body
      * @param array $query
      * @param string $method
-     * @param string $requestUri
+     * @param string $url
      */
     private static function processData(
         &$headers,
         &$body,
         &$query,
         &$method,
-        &$requestUri
+        &$url
     ) {
         if(!$method) { // if method is not set, set it to GET by default
             $method = self::METHOD_GET;
@@ -82,12 +82,12 @@ class Client
             unset($headers[$i]);
         }
         if($query) {  // if the request has a query string, append it to the request URI
-            $requestUri .= '?' . http_build_query($query);
+            $url .= '?' . http_build_query($query);
         }
     }
   /**
    * This method is used to make a request to the server
-   * @param string $requestUri
+   * @param string $url
    * @param array $headers
    * @param string $method
    * @param array $body
@@ -95,7 +95,7 @@ class Client
    * @return Response
    */
     public function fetchHelper(
-        $requestUri,
+        $url,
         $headers,
         $method,
         $body,
@@ -107,13 +107,13 @@ class Client
             $body,
             $query,
             $method,
-            $requestUri
+            $url
         );
         $resp_headers = [];
         // Initialize the curl session
         $ch = curl_init();
         // Set the request URI
-        curl_setopt($ch, CURLOPT_URL, $requestUri);
+        curl_setopt($ch, CURLOPT_URL, $url);
         // Set the request headers
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         // Set the request method
@@ -154,7 +154,7 @@ class Client
         }
         $resp = new Response(
             method: $method,
-            url: $requestUri,
+            url: $url,
             statusCode: $resp_status,
             headers: $resp_headers,
             body: $resp_body,
@@ -163,7 +163,7 @@ class Client
         return $resp;
     }
     public static function fetch(
-        $requestUri,
+        $url,
         $headers = [],
         $method = 'GET',
         $body = [],
@@ -171,7 +171,7 @@ class Client
     ): Response {
         $client = new Client();
         return $client->fetchHelper(
-            $requestUri,
+            $url,
             $headers,
             $method,
             $body,

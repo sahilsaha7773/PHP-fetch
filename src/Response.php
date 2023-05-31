@@ -31,7 +31,6 @@ class Response
         string $url,
         int $statusCode=200,
         string $type='',
-        bool $ok=true,
         string $body='',
         array $headers=[],
     ) {
@@ -41,7 +40,7 @@ class Response
         $this->method = $method;
         $this->url = $url;
         $this->type = $type;
-        $this->ok = $ok;
+        $this->ok = $statusCode >= 200 && $statusCode < 300;
     }
     // Getters
     public function isOk()

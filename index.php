@@ -3,7 +3,7 @@
 require_once 'vendor/autoload.php';
 try {
     $resp = \Sahils\UtopiaFetch\Client::fetch(
-        requestUri: 'http://localhost:8000/post',
+        url: 'http://localhost:8000/post',
         method: 'POST',
         body: [
             'name' => 'John Doe',
@@ -15,7 +15,7 @@ try {
 }
 if ($resp->isOk()) {
     echo "Response is OK\n";
-    echo $resp->getBody();
+    echo $resp->getType();
 } else {
     echo "Response is not OK\n";
     echo $resp->getBody();
