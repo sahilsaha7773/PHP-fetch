@@ -2,7 +2,7 @@
 
 namespace Sahils\UtopiaFetch;
 
-use PHPUnit\Framework\TestCase; 
+use PHPUnit\Framework\TestCase;
 
 final class ClientTest extends TestCase
 {
@@ -35,13 +35,13 @@ final class ClientTest extends TestCase
             $respData = $resp->json(); // Convert JSON string to object
             $this->assertEquals($respData->method, $method); // Assert that the method is equal to the response's method
             if($method === 'POST') {
-                if($body == []){ // if body is empty then response body should be an empty string
-                    $this->assertEquals($respData->body, ''); 
+                if($body == []) { // if body is empty then response body should be an empty string
+                    $this->assertEquals($respData->body, '');
                 } else {
                     $this->assertEquals( // Assert that the body is equal to the response's body
-                        $respData->body, 
+                        $respData->body,
                         json_encode($body) // Converting the body to JSON string
-                    ); 
+                    );
                 }
             }
             $this->assertEquals($respData->url, $url); // Assert that the url is equal to the response's url
