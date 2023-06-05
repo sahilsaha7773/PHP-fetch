@@ -46,7 +46,7 @@ class Client
      * @param string $method
      * @param string $url
      */
-    private static function processData(
+    private function processData(
         &$headers,
         &$body,
         &$query,
@@ -68,7 +68,7 @@ class Client
                     $body = json_encode($body ?? []);
                     break;
                 case 'application/x-www-form-urlencoded':
-                    $body = flatten($body ?? []);
+                    $body = $this->flatten($body ?? []);
                     break;
                 default:
             }
@@ -76,8 +76,7 @@ class Client
         if(!is_array($headers)) {
             $headers = [];
         }
-        // convert headers to appropriate format
-        foreach ($headers as $i => $header) {
+        foreach ($headers as $i => $header) { // convert headers to appropriate format
             $headers[] = $i . ':' . $header;
             unset($headers[$i]);
         }
@@ -150,7 +149,6 @@ class Client
         if (isset($error_msg)) {
             // TODO - Handle cURL error accordingly
             throw new \FetchException($error_msg);
-            print_r($error_msg);
         }
         $resp = new Response(
             method: $method,
