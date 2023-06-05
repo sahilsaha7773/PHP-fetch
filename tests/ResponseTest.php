@@ -15,8 +15,7 @@ final class ResponseTest extends TestCase
         $statusCode,
         $url,
         $method,
-        $type,
-        $ok
+        $type
     ) {
         $resp = new Response(
             body: $body,
@@ -24,8 +23,7 @@ final class ResponseTest extends TestCase
             statusCode: $statusCode,
             url: $url,
             method: $method,
-            type: $type,
-            ok: $ok
+            type: $type
         );
         $this->assertEquals($body, $resp->getBody());
         $this->assertEquals($headers, $resp->getHeaders());
@@ -33,7 +31,7 @@ final class ResponseTest extends TestCase
         $this->assertEquals($url, $resp->getUrl());
         $this->assertEquals($method, $resp->getMethod());
         $this->assertEquals($type, $resp->getType());
-        $this->assertEquals($ok, $resp->isOk());
+        $this->assertEquals($statusCode>=200 && $statusCode<300, $resp->isOk());
     }
 
     /**
@@ -46,7 +44,6 @@ final class ResponseTest extends TestCase
         $url,
         $method,
         $type,
-        $ok
     ) {
         $resp = new Response(
             body: $body,
@@ -55,7 +52,6 @@ final class ResponseTest extends TestCase
             url: $url,
             method: $method,
             type: $type,
-            ok: $ok
         );
         $this->assertEquals($body, $resp->getBody()); // Assert that the body is equal to the response's body
         $jsonBody = json_decode($body); // Convert JSON string to object
@@ -66,7 +62,10 @@ final class ResponseTest extends TestCase
         }
         $this->assertEquals($bin, $resp->blob()); // Assert that the blob body is equal to the response's blob body
     }
-
+    /**
+     * Data provider for testClassConstructorAndGetters and testClassMethods
+     * @return array
+     */
     public function dataSet()
     {
         return [
@@ -78,9 +77,8 @@ final class ResponseTest extends TestCase
             200,
             'http://localhost:8001/post',
             'POST',
-            'application/json',
-            true
-          ]
+            'application/json'
+          ],
         ];
     }
 }
