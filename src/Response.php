@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Sahils\UtopiaFetch;
 
-// Response Class
+# Response Class
 class Response
 {
     private $body;
@@ -42,7 +42,7 @@ class Response
         $this->type = $type;
         $this->ok = $statusCode >= 200 && $statusCode < 300;
     }
-    // Getters
+    # Getters
     public function isOk()
     {
         return $this->ok;
@@ -72,6 +72,18 @@ class Response
         return $this->type;
     }
     // Methods
+
+    /**
+      * This method is used to convert the response body to text
+      * @return string
+    */
+    public function text(): string
+    {
+        if(is_array($this->body)) {
+            return json_encode($this->body);
+        }
+        return strval($this->body);
+    }
     /**
       * This method is used to convert the response body to JSON
       * @return object
@@ -80,18 +92,11 @@ class Response
     {
         $data = json_decode($this->body);
         if($data === null) { // Throw an exception if the data is null
-            throw new DecodeError('Error decoding JSON');
+            throw new \Exception('Error decoding JSON');
         }
         return $data;
     }
-    /**
-      * This method is used to convert the response body to text
-      * @return string
-    */
-    public function text(): string
-    {
-        return $this->body;
-    }
+
     /**
       * This method is used to convert the response body to an array
       * @return array
