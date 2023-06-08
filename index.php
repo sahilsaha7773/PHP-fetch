@@ -1,22 +1,34 @@
 <?php
 
 require_once 'vendor/autoload.php';
+
+$url = "http://localhost:8000";
+$method = "POST";
+$body = [
+    'name' => 'John Doe',
+    'age' => 30,
+];
+$query = [
+    'name' => 'John Doe',
+    'age' => 30,
+];
 try {
     $resp = \Sahils\UtopiaFetch\Client::fetch(
-        url: 'http://localhost:8000/post',
-        method: 'POST',
-        body: [
-            'name' => 'John Doe',
-            'age' => 30,
-        ]
+        url: $url,
+        method: $method,
+        headers: [
+        ],
+        body: $body,
+        query: $query
     );
 } catch (\Sahils\UtopiaFetch\FetchException $e) {
     echo $e;
 }
+
 if ($resp->isOk()) {
     echo "Response is OK\n";
-    echo $resp->getType();
+    $respBody = $resp->text();
+    print_r($respBody);
 } else {
-    echo "Response is not OK\n";
-    echo $resp->getBody();
+    echo "Please configure your PHP inbuilt SERVER";
 }

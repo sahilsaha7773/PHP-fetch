@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Sahils\UtopiaFetch;
 
-# Response Class
+/**
+ * Response class
+ * @package Sahils\UtopiaFetch
+ */
 class Response
 {
-    private $body;
+    private string $body;
     private array $headers;
     private int $statusCode;
     private string $method;
@@ -21,9 +24,8 @@ class Response
      * @param string $url
      * @param int $statusCode
      * @param string $type
-     * @param bool $ok
      * @param string $body
-     * @param array $headers
+     * @param array<string, string> $headers
      * @return void
      */
     public function __construct(
@@ -43,31 +45,59 @@ class Response
         $this->ok = $statusCode >= 200 && $statusCode < 300;
     }
     # Getters
-    public function isOk()
+    /**
+     * This method is used to check if the response is OK
+     * @return bool
+     */
+    public function isOk(): bool
     {
         return $this->ok;
     }
-    public function getBody()
+    /**
+     * This method is used to get the response body as string
+     * @return string
+     */
+    public function getBody(): string
     {
         return $this->body;
     }
-    public function getHeaders()
+    /**
+     * This method is used to get the response headers
+     * @return array
+     */
+    public function getHeaders(): array
     {
         return $this->headers;
     }
-    public function getStatusCode()
+    /**
+     * This method is used to get the response status code
+     * @return int
+     */
+    public function getStatusCode(): int
     {
         return $this->statusCode;
     }
-    public function getMethod()
+    /**
+     * This method is used to get the response method
+     * @return string
+     */
+    public function getMethod(): string
     {
         return $this->method;
     }
-    public function getUrl()
+    /**
+     * This method is used to get the response URL
+     * @return string
+     */
+    public function getUrl(): string
     {
         return $this->url;
     }
-    public function getType()
+    /**
+     * This method is used to get the response body type
+     * @return string
+     */
+    public function getType(): string
     {
         return $this->type;
     }
@@ -79,9 +109,6 @@ class Response
     */
     public function text(): string
     {
-        if(is_array($this->body)) {
-            return json_encode($this->body);
-        }
         return strval($this->body);
     }
     /**

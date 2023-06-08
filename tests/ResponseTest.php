@@ -8,6 +8,13 @@ final class ResponseTest extends TestCase
 {
     /**
      * @dataProvider dataSet
+     * @param string $body
+     * @param array<string, string> $headers
+     * @param int $statusCode
+     * @param string $url
+     * @param string $method
+     * @param string $type
+     * @return void
      */
     public function testClassConstructorAndGetters(
         $body,
@@ -16,7 +23,7 @@ final class ResponseTest extends TestCase
         $url,
         $method,
         $type
-    ) {
+    ): void {
         $resp = new Response(
             body: $body,
             headers: $headers,
@@ -35,7 +42,15 @@ final class ResponseTest extends TestCase
     }
 
     /**
+     * Data
      * @dataProvider dataSet
+     * @param string $body
+     * @param array<string, string> $headers
+     * @param int $statusCode
+     * @param string $url
+     * @param string $method
+     * @param string $type
+     * @return void
      */
     public function testClassMethods(
         $body,
@@ -64,12 +79,12 @@ final class ResponseTest extends TestCase
     }
     /**
      * Data provider for testClassConstructorAndGetters and testClassMethods
-     * @return array
+     * @return array<string, array<mixed>>
      */
     public function dataSet()
     {
         return [
-          [
+        'dummyResponse'=>[
             '{"name":"John Doe","age":30}',
             [
               'content-type' => 'application/json'

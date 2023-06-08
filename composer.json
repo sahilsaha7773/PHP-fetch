@@ -3,7 +3,8 @@
     "type": "library",
     "require-dev": {
         "phpunit/phpunit": "^9.5",
-        "laravel/pint": "*"
+        "laravel/pint": "*",
+        "phpstan/phpstan": "^1.10"
     },
     "autoload": {
         "psr-4": {

@@ -2,9 +2,10 @@
 
 namespace Sahils\UtopiaFetch;
 
-require_once 'Response.php';
-require_once 'FetchException.php';
-
+/**
+ * Client class
+ * @package Sahils\UtopiaFetch
+ */
 class Client
 {
     public const METHOD_GET = 'GET';
@@ -19,9 +20,9 @@ class Client
     /**
      * Flatten request body array to PHP multiple format
      *
-     * @param array $data
+     * @param array<mixed> $data
      * @param string $prefix
-     * @return array
+     * @return array<mixed>
      */
     private function flatten(array $data, string $prefix = ''): array
     {
@@ -40,19 +41,19 @@ class Client
     }
   /**
      * Private static method to process the data before making the request
-     * @param array $headers
-     * @param array $body
-     * @param array $query
+     * @param array<string, string> $headers
+     * @param array<string, mixed> $body
+     * @param array<string, mixed> $query
      * @param string $method
      * @param string $url
      */
     private function processData(
-        &$headers,
-        &$body,
-        &$query,
-        &$method,
-        &$url
-    ) {
+        array &$headers,
+        array &$body,
+        array $query,
+        string &$method,
+        string &$url
+    ): void {
         if(!$method) { // if method is not set, set it to GET by default
             $method = self::METHOD_GET;
         } else { // else convert the method to uppercase
@@ -65,10 +66,10 @@ class Client
         if(isset($headers['content-type'])) {
             switch($headers['content-type']) { // Convert the body to the appropriate format
                 case 'application/json':
-                    $body = json_encode($body ?? []);
+                    $body = json_encode($body);
                     break;
                 case 'application/x-www-form-urlencoded':
-                    $body = $this->flatten($body ?? []);
+                    $body = $this->flatten($body);
                     break;
                 default:
             }
@@ -87,18 +88,20 @@ class Client
   /**
    * This method is used to make a request to the server
    * @param string $url
-   * @param array $headers
+   * @param array<string, string> $headers
    * @param string $method
-   * @param array $body
-   * @param array $query
+   * @param array<string, mixed> $body
+   * @param array<string, mixed> $query
    * @return Response
    */
-    public function fetchHelper(
-        $url,
-        $headers,
-        $method,
-        $body,
-        $query
+    private function fetchHelper(
+        string $url,
+        array $headers,
+        string $method,
+        array $body,
+        array $query,
+        int $connectionTimeout = 0,
+        int $timeout = 0,
     ): Response {
         // Process the data before making the request
         $this->processData(
@@ -148,7 +151,7 @@ class Client
 
         if (isset($error_msg)) {
             // TODO - Handle cURL error accordingly
-            throw new \FetchException($error_msg);
+            throw new FetchException($error_msg);
         }
         $resp = new Response(
             method: $method,
@@ -160,12 +163,21 @@ class Client
         );
         return $resp;
     }
+    /**
+     * This method is used to make a call to the private fetchHelper method
+     * @param string $url
+     * @param array<string, string> $headers
+     * @param string $method
+     * @param array<string, mixed> $body
+     * @param array<string, mixed> $query
+     * @return Response
+     */
     public static function fetch(
-        $url,
-        $headers = [],
-        $method = 'GET',
-        $body = [],
-        $query = []
+        string $url,
+        array $headers = [],
+        string $method = 'GET',
+        array $body = [],
+        array $query = []
     ): Response {
         $client = new Client();
         return $client->fetchHelper(

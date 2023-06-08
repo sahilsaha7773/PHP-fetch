@@ -11,6 +11,12 @@ final class ClientTest extends TestCase
      * Uses the PHP inbuilt server to test the Client::fetch method
      * @runInSeparateProcess
      * @dataProvider dataSet
+     * @param string $url
+     * @param string $method
+     * @param array<string, mixed> $body
+     * @param array<string, string> $headers
+     * @param array<string, mixed> $query
+     * @return void
      */
     public function testFetch(
         $url,
@@ -18,7 +24,8 @@ final class ClientTest extends TestCase
         $body = [],
         $headers = [],
         $query = []
-    ) {
+    ): void {
+        $resp = null;
         try {
             $resp = Client::fetch(
                 url: $url,
@@ -49,15 +56,15 @@ final class ClientTest extends TestCase
                 json_encode($respData->query), // Converting the query to JSON string
                 json_encode($query) // Converting the query to JSON string
             ); // Assert that the args are equal to the response's args
-        } else {
+        } else { // If the response is not OK
             echo "Please configure your PHP inbuilt SERVER";
         }
     }
     /**
      * Data provider for testFetch
-     * @return array
+     * @return array<string, array<string>>
      */
-    public function dataSet()
+    public function dataSet(): array
     {
         return [
             'get' => [
