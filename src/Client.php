@@ -71,6 +71,12 @@ class Client
                 case 'application/x-www-form-urlencoded':
                     $body = $this->flatten($body);
                     break;
+                case 'multipart/form-data':
+                    $body = $this->flatten($body);
+                    break;
+                case 'application/graphql':
+                    $body = $body[0];
+                    break;
                 default:
             }
         }
@@ -115,7 +121,7 @@ class Client
         // Initialize the curl session
         $ch = curl_init();
         // Set the request URI
-        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_URL, $url); 
         // Set the request headers
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         // Set the request method
