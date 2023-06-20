@@ -42,7 +42,7 @@ class Client
   /**
      * Private static method to process the data before making the request
      * @param array<string, string> $headers
-     * @param array<string, mixed> $body
+     * @param array<string>|array<string, mixed> $body
      * @param array<string, mixed> $query
      * @param string $method
      * @param string $url
@@ -96,7 +96,7 @@ class Client
    * @param string $url
    * @param array<string, string> $headers
    * @param string $method
-   * @param array<string, mixed> $body
+   * @param array<string>|array<string, mixed> $body
    * @param array<string, mixed> $query
    * @return Response
    */
@@ -105,9 +105,7 @@ class Client
         array $headers,
         string $method,
         array $body,
-        array $query,
-        int $connectionTimeout = 0,
-        int $timeout = 0,
+        array $query
     ): Response {
         // Process the data before making the request
         $this->processData(
@@ -174,14 +172,16 @@ class Client
      * @param string $url
      * @param array<string, string> $headers
      * @param string $method
-     * @param array<string, mixed> $body
+     * @param array<string>|array<string, mixed> $body
      * @param array<string, mixed> $query
      * @return Response
      */
     public static function fetch(
         string $url,
-        array $headers = [],
-        string $method = 'GET',
+        array $headers = [
+            'content-type' => ''
+        ],
+        string $method = self::METHOD_GET,
         array $body = [],
         array $query = []
     ): Response {
