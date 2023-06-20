@@ -6,6 +6,11 @@
         "laravel/pint": "*",
         "phpstan/phpstan": "^1.10"
     },
+    "scripts": {
+        "test": "phpunit --verbose tests",
+        "phpstan": "phpstan analyse src tests --level 5",
+        "pint": "pint"
+    },
     "autoload": {
         "psr-4": {
             "Sahils\\UtopiaFetch\\": "src/"
