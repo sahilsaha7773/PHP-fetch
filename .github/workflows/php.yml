@@ -33,7 +33,8 @@ jobs:
       run: composer install --prefer-dist --no-progress
 
     - name: Run test suite
-      run: composer run-script test
+      run: nohup php -S localhost:8000 router.php &
+        composer run-script test
     
     - name: Run code analysis
       run: composer run-script phpstan
