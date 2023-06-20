@@ -41,7 +41,7 @@ final class ClientTest extends TestCase
         if ($resp->isOk()) { // If the response is OK
             $respData = $resp->json(); // Convert JSON string to object
             $this->assertEquals($respData->method, $method); // Assert that the method is equal to the response's method
-            if($method === 'POST') {
+            if($method != Client::METHOD_GET) {
                 if($body == []) { // if body is empty then response body should be an empty string
                     $this->assertEquals($respData->body, '');
                 } else {
@@ -62,18 +62,18 @@ final class ClientTest extends TestCase
     }
     /**
      * Data provider for testFetch
-     * @return array<string, array<string>>
+     * @return array<string, array<mixed>>
      */
     public function dataSet(): array
     {
         return [
             'get' => [
                 'localhost:8000',
-                'GET',
+                Client::METHOD_GET
             ],
             'getWithQuery' => [
                 'localhost:8000',
-                'GET',
+                Client::METHOD_GET,
                 [],
                 [],
                 [
@@ -83,11 +83,11 @@ final class ClientTest extends TestCase
             ],
             'postNoBody' => [
                 'localhost:8000',
-                'POST'
+                Client::METHOD_POST
             ],
             'postJsonBody' => [
                 'localhost:8000',
-                'POST',
+                Client::METHOD_POST,
                 [
                     'name' => 'John Doe',
                     'age' => 30,
@@ -98,7 +98,7 @@ final class ClientTest extends TestCase
             ],
             'postFormDataBody' => [
                 'localhost:8000',
-                'POST',
+                Client::METHOD_POST,
                 [
                     'name' => 'John Doe',
                     'age' => 30,
