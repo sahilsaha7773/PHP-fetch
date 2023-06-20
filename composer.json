@@ -1,6 +1,8 @@
 {
     "name": "sahils/utopia-fetch",
+    "description": "A simple library that provides an interface for making HTTP Requests.",
     "type": "library",
+    "license": "MIT",
     "require-dev": {
         "phpunit/phpunit": "^9.5",
         "laravel/pint": "*",
