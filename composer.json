@@ -10,8 +10,8 @@
     },
     "scripts": {
         "test": "phpunit --verbose tests",
-        "phpstan": "phpstan analyse src tests --level 5",
-        "pint": "pint"
+        "check": "./vendor/bin/phpstan analyse --level max src tests",
+        "lint": "pint --test"
     },
     "autoload": {
         "psr-4": {
