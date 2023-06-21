@@ -37,25 +37,70 @@ final class ClientTest extends TestCase
             );
         } catch (FetchException $e) {
             echo $e;
+            return;
         }
         if ($resp->isOk()) { // If the response is OK
-            $respData = $resp->json(); // Convert JSON string to object
-            $this->assertEquals($respData->method, $method); // Assert that the method is equal to the response's method
+            $respData = $resp->array(); // Convert body to array
+            $this->assertEquals($respData['method'], $method); // Assert that the method is equal to the response's method
             if($method != Client::METHOD_GET) {
                 if($body == []) { // if body is empty then response body should be an empty string
-                    $this->assertEquals($respData->body, '');
+                    $this->assertEquals($respData['body'], '');
                 } else {
                     $this->assertEquals( // Assert that the body is equal to the response's body
-                        $respData->body,
+                        $respData['body'],
                         json_encode($body) // Converting the body to JSON string
                     );
                 }
             }
-            $this->assertEquals($respData->url, $url); // Assert that the url is equal to the response's url
+            $this->assertEquals($respData['url'], $url); // Assert that the url is equal to the response's url
             $this->assertEquals(
-                json_encode($respData->query), // Converting the query to JSON string
+                json_encode($respData['query']), // Converting the query to JSON string
                 json_encode($query) // Converting the query to JSON string
             ); // Assert that the args are equal to the response's args
+        } else { // If the response is not OK
+            echo "Please configure your PHP inbuilt SERVER";
+        }
+    }
+    /**
+     * Test for sending a file in the request body
+     * @return void
+     */
+    public function testSendFile(): void
+    {
+        $resp = null;
+        try {
+            $resp = Client::fetch(
+                url: 'localhost:8000',
+                method: Client::METHOD_POST,
+                headers: [
+                ],
+                body: [
+                    'file' => new \CURLFile(strval(realpath(__DIR__ . '/resources/logo.png')), 'image/png', 'logo.png')
+                ],
+                query: []
+            );
+        } catch (FetchException $e) {
+            echo $e;
+            return;
+        }
+        if ($resp->isOk()) { // If the response is OK
+            $respData = $resp->array(); // Convert body to array
+            if(isset($respData['method'])) {
+                $this->assertEquals($respData['method'], Client::METHOD_POST);
+            } // Assert that the method is equal to the response's method
+            $this->assertEquals($respData['url'], 'localhost:8000'); // Assert that the url is equal to the response's url
+            $this->assertEquals(
+                json_encode($respData['query']), // Converting the query to JSON string
+                json_encode([]) // Converting the query to JSON string
+            ); // Assert that the args are equal to the response's args
+            $body = [ // Expected response body for file
+                'file' => [
+                    'name' => __DIR__.'/resources/logo.png',
+                    'mime' => 'image/png',
+                    'postname' => 'logo.png'
+                ]
+            ];
+            $this->assertEquals($respData['body'], json_encode($body)); // Assert that the expected body is equal to the response's body
         } else { // If the response is not OK
             echo "Please configure your PHP inbuilt SERVER";
         }
