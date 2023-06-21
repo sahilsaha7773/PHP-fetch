@@ -119,7 +119,7 @@ class Client
         // Initialize the curl session
         $ch = curl_init();
         // Set the request URI
-        curl_setopt($ch, CURLOPT_URL, $url); 
+        curl_setopt($ch, CURLOPT_URL, $url);
         // Set the request headers
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         // Set the request method
@@ -162,7 +162,7 @@ class Client
             url: $url,
             statusCode: $resp_status,
             headers: $resp_headers,
-            body: $resp_body,
+            body: strval($resp_body),
             type: $resp_type
         );
         return $resp;

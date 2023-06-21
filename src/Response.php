@@ -6,16 +6,59 @@ namespace Sahils\UtopiaFetch;
 
 /**
  * Response class
+ * This class is used to represent the response from the server
+ * @property-read string $body
+ * @property-read array<string, string> $headers
+ * @property-read int $statusCode
+ * @property-read string $method
+ * @property-read string $type
+ * @property-read string $url
+ * @property-read bool $ok
  * @package Sahils\UtopiaFetch
  */
 class Response
 {
+    /**
+     * Response Body
+     *
+     * @var string
+     */
     private string $body;
+    /**
+     * Response Headers
+     *
+     * @var array<string, string>
+     */
     private array $headers;
+    /**
+     * Response Status Code
+     *
+     * @var int
+     */
     private int $statusCode;
+    /**
+     * Response Method
+     *
+     * @var string
+     */
     private string $method;
+    /**
+     * Response Body Type
+     *
+     * @var string
+     */
     private string $type;
+    /**
+     * Response URL
+     *
+     * @var string
+     */
     private string $url;
+    /**
+     * Response OK
+     *
+     * @var bool
+     */
     private bool $ok;
 
     /**
@@ -63,7 +106,7 @@ class Response
     }
     /**
      * This method is used to get the response headers
-     * @return array
+     * @return array<string, string>
      */
     public function getHeaders(): array
     {
@@ -113,9 +156,9 @@ class Response
     }
     /**
       * This method is used to convert the response body to JSON
-      * @return object
+      * @return mixed
     */
-    public function json(): object
+    public function json(): mixed
     {
         $data = json_decode($this->body);
         if($data === null) { // Throw an exception if the data is null
@@ -126,11 +169,15 @@ class Response
 
     /**
       * This method is used to convert the response body to an array
-      * @return array
+      * @return array<mixed>
     */
     public function array(): array
     {
-        return json_decode($this->body, true);
+        $json = json_decode($this->body, true);
+        if (!is_array($json)) {
+            throw new \Exception('Failed to parse response: ' . $this->body);
+        }
+        return $json;
     }
     /*
     * This method is used to convert the response body to blob
